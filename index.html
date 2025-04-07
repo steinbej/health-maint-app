@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Health Maintenance Visits</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: #EAEAEA;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: white;
+            color: black;
+            text-align: center;
+            padding: 16px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        h1 {
+            font-size: 22px;
+            font-weight: 500;
+        }
+        
+        h2 {
+            font-size: 20px;
+            font-weight: 500;
+            text-align: center;
+            margin: 16px 0;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .grid-buttons {
+            margin-top: 16px;
+        }
+        
+        .grid-button {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background-color: white;
+            border: none;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+            font-size: 18px;
+            color: black;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .grid-button:active {
+            background-color: #f0f0f0;
+        }
+        
+        .content-view {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            z-index: 200;
+            display: none;
+            flex-direction: column;
+        }
+        
+        .content-header {
+            background-color: white;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            z-index: 201;
+        }
+        
+        .content-title {
+            font-size: 20px;
+            text-align: center;
+            width: 100%;
+            font-weight: 500;
+        }
+        
+        .back-button {
+            color: #007AFF;
+            font-size: 18px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-align: left;
+            padding: 0;
+            width: 60px;
+        }
+        
+        .content-body {
+            flex-grow: 1;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Instead of using PDF viewer, we'll use images for better control */
+        .pdf-container {
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .pdf-img {
+            max-height: 100%;
+            display: block;
+        }
+        
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            background-color: #f9f9f9;
+            border-top: 1px solid #ddd;
+            padding: 8px 0;
+            z-index: 100;
+        }
+        
+        .footer-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px;
+            color: #007AFF;
+            text-decoration: none;
+            font-size: 12px;
+            width: 20%;
+            text-align: center;
+        }
+        
+        .footer-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+        
+        .footer-button.active {
+            color: #007AFF;
+        }
+        
+        .footer-button:not(.active) {
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Health Maintenance Visits</h1>
+    </header>
+    
+    <div class="container" id="main-screen">
+        <h2>VISIT GRIDS</h2>
+        <div class="grid-buttons">
+            <button class="grid-button" data-title="Birth to 4 months" data-img="newborns10-23.jpg">Well Child Birth to 4 mos old</button>
+            <button class="grid-button" data-title="Children 6 mos to 18 mos" data-img="toddlers10-23.jpg">Well Child 6 mos to 18 mos old</button>
+            <button class="grid-button" data-title="Children 24 mos to 10 yrs" data-img="children7-23.jpg">Well Child 24 mos to 10 yrs old</button>
+            <button class="grid-button" data-title="Tweens & Teens" data-img="teens7-23.jpg">Well Tweens & Teens to 19 yrs old</button>
+            <button class="grid-button" data-title="Adults" data-img="adults1-25.jpg">Well Adults 20's to 80's yrs old</button>
+            <button class="grid-button" data-title="Prenatal Initial to 20 wks" data-img="prenatalThru20wks1-25.jpg">Prenatal Visit Initial to 20 wks</button>
+            <button class="grid-button" data-title="Prenatal 24 wks to 41 wks" data-img="prenatal24wksOnward1-25.jpg">Prenatal Visit 24 wks to 41 wks</button>
+        </div>
+    </div>
+    
+    <div class="content-view" id="pdf-viewer">
+        <div class="content-header">
+            <button class="back-button">Back</button>
+            <div class="content-title" id="content-title">Guide Title</div>
+            <div style="width: 60px;"></div> <!-- Spacer for alignment -->
+        </div>
+        <div class="content-body" id="content-body">
+            <!-- Content will be embedded here -->
+        </div>
+    </div>
+
+    <footer>
+        <a href="#" class="footer-button active">
+            <div class="footer-icon">🏠</div>
+            <div>Health Maint</div>
+        </a>
+        <a href="#" class="footer-button">
+            <div class="footer-icon">⚠️</div>
+            <div>Disclaimer</div>
+        </a>
+        <a href="#" class="footer-button">
+            <div class="footer-icon">ℹ️</div>
+            <div>About App</div>
+        </a>
+        <a href="#" class="footer-button">
+            <div class="footer-icon">📚</div>
+            <div>References</div>
+        </a>
+        <a href="#" class="footer-button">
+            <div class="footer-icon">⭐</div>
+            <div>More Apps</div>
+        </a>
+    </footer>
+
+    <script>
+        // Setup the grid buttons
+        document.querySelectorAll('.grid-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const title = this.getAttribute('data-title');
+                const imgFile = this.getAttribute('data-img');
+                
+                // Set the title
+                document.getElementById('content-title').textContent = title;
+                
+                // Create the PDF embedded view
+                const contentBody = document.getElementById('content-body');
+                contentBody.innerHTML = ''; // Clear previous content
+                
+                // Create a container div with scrolling
+                const container = document.createElement('div');
+                container.className = 'pdf-container';
+                
+                // Use an image instead of PDF for better control
+                const img = document.createElement('img');
+                img.className = 'pdf-img';
+                img.src = imgFile;
+                img.alt = title;
+                
+                container.appendChild(img);
+                contentBody.appendChild(container);
+                
+                // Show the PDF viewer
+                document.getElementById('pdf-viewer').style.display = 'flex';
+                document.getElementById('main-screen').style.display = 'none';
+            });
+        });
+        
+        // Setup the back button
+        document.querySelector('.back-button').addEventListener('click', function() {
+            document.getElementById('pdf-viewer').style.display = 'none';
+            document.getElementById('main-screen').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
